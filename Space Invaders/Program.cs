@@ -37,13 +37,8 @@ namespace SpaceInvaders {
             player.yPos = 115;
             player.Scale = 1;
             GameObjects.Add(player);
-            
-            // Init a monster
-            GameObject monster1 = new Monster();
-            GameObjects.Add(monster1);
 
             // Init Obstacles
-
             for (int i = 0; i < 6; i++) {
                 GameObject obstacle = new Obstacle();
                 player.Parent = this;

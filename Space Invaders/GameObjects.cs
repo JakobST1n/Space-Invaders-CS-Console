@@ -5,6 +5,10 @@ namespace SpaceInvaders {
 
     class GameLogic : GameObject {
 
+        public override void Start() {
+            
+        }
+
         public override void Update() {
 
             if (Input.KeyPressed(ConsoleKey.Escape)) {
@@ -44,22 +48,14 @@ namespace SpaceInvaders {
                 GameObject other = Parent.GameObjects[i];
 
                 if (other.Tag == "Enemy") {
-                    int x1 = other.xPos;
-                    int x2 = other.xPos + other.Sprite.GetLength(1);
-                    int y1 = other.yPos;
-                    int y2 = other.yPos + other.Sprite.GetLength(0);
-                    if (x1 <= xPos && xPos <= x2 && y1 <= yPos && yPos <= y2) {
+                    if (CollidingWith(other)) {
                         other.isDead = true;
                         isDead = true;
                     }
                 }
 
                 if (other.Tag == "Obstacle") {
-                    int x1 = other.xPos;
-                    int x2 = other.xPos + other.Sprite.GetLength(1);
-                    int y1 = other.yPos;
-                    int y2 = other.yPos + other.Sprite.GetLength(0);
-                    if (x1 <= xPos && xPos <= x2 && y1 <= yPos && yPos <= y2) {
+                    if (CollidingWith(other)) {
                         isDead = true;
                     }
                 }

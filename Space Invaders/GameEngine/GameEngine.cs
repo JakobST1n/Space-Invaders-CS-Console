@@ -132,6 +132,16 @@ namespace GameEngine {
             // This method is called after the frame is rendered
         }
 
+        public bool CollidingWith(GameObject other) {
+            // This method checks if 'this' collides with another GameObject
+            // TODO Make this check if the position contains '\0', if so we are not colliding. This will make hitboxes more natural
+            int x1 = other.xPos;
+            int x2 = other.xPos + other.Sprite.GetLength(1);
+            int y1 = other.yPos;
+            int y2 = other.yPos + other.Sprite.GetLength(0);
+            return (x1 < xPos && xPos < x2 && y1 < yPos && yPos < y2);
+        }
+
         public void ScaleSprite() {
             // This is called after the Update method, and scales the sprite if it has changed
             if (RenderedSprite == Sprite) { return; }
