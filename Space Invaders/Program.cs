@@ -41,9 +41,39 @@ namespace SpaceInvaders {
             // Init Obstacles
             for (int i = 0; i < 6; i++) {
                 GameObject obstacle = new Obstacle();
-                player.Parent = this;
+                obstacle.Parent = this;
                 obstacle.xPos = 50 + (i * 90);
                 obstacle.yPos = 90;
+                GameObjects.Add(obstacle);
+                obstacle = new Obstacle();
+                obstacle.Parent = this;
+                obstacle.xPos = 50 + (i * 90) + 8;
+                obstacle.yPos = 90;
+                GameObjects.Add(obstacle);
+                obstacle = new Obstacle();
+                obstacle.Parent = this;
+                obstacle.xPos = 50 + (i * 90) + 16;
+                obstacle.yPos = 90;
+                GameObjects.Add(obstacle);
+                obstacle = new Obstacle();
+                obstacle.Parent = this;
+                obstacle.xPos = 50 + (i * 90) + 24;
+                obstacle.yPos = 90;
+                GameObjects.Add(obstacle);
+                obstacle = new Obstacle();
+                obstacle.Parent = this;
+                obstacle.xPos = 50 + (i * 90) + 32;
+                obstacle.yPos = 90;
+                GameObjects.Add(obstacle);
+                obstacle = new Obstacle();
+                obstacle.Parent = this;
+                obstacle.xPos = 50 + (i * 90);
+                obstacle.yPos = 90 + 4;
+                GameObjects.Add(obstacle);
+                obstacle = new Obstacle();
+                obstacle.Parent = this;
+                obstacle.xPos = 50 + (i * 90) + 32;
+                obstacle.yPos = 90 + 4;
                 GameObjects.Add(obstacle);
             }
 

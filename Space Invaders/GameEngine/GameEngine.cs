@@ -12,6 +12,8 @@ namespace GameEngine {
         public List<GameObject> GameObjects = new List<GameObject>();
         public Thread _listnerThread = new Thread(Input.Listner);
 
+        public Random Rand = new Random();
+
         private Graphics _graphics;
         private bool _running;
 
@@ -139,7 +141,7 @@ namespace GameEngine {
             int x2 = other.xPos + other.Sprite.GetLength(1);
             int y1 = other.yPos;
             int y2 = other.yPos + other.Sprite.GetLength(0);
-            return (x1 < xPos && xPos < x2 && y1 < yPos && yPos < y2);
+            return (x1 <= xPos && xPos < x2 && y1 <= yPos && yPos <= y2);
         }
 
         public void ScaleSprite() {
