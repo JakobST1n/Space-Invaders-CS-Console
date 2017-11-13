@@ -33,8 +33,7 @@ namespace GameEngine {
         public void DrawFrame(Frame newFrame) {
             /* Method that draws all changes from last frame to the screen */
             FrameNum++;
-            //Console.Clear();
-            //Console.SetCursorPosition(0, 0);
+
             for (int y = 0; y < _consoleBuffer.GetLength(0); y++) {
                 for (int x = 0; x < _consoleBuffer.GetLength(1); x++) {
 

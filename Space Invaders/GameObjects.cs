@@ -7,10 +7,24 @@ namespace SpaceInvaders {
 
         public override void Start() {
             for (int i = 0; i < 12; i++) {
-                GameObject monster = new Monster();
+                GameObject monster = new SmallInvader();
                 monster.Parent = Parent;
                 monster.xPos = i * 35 + 90;
                 monster.yPos = 20;
+                Parent.GameObjects.Add(monster);
+            }
+            for (int i = 0; i < 12; i++) {
+                GameObject monster = new MediumInvader();
+                monster.Parent = Parent;
+                monster.xPos = i * 35 + 87;
+                monster.yPos = 30;
+                Parent.GameObjects.Add(monster);
+            }
+            for (int i = 0; i < 12; i++) {
+                GameObject monster = new SmallInvader();
+                monster.Parent = Parent;
+                monster.xPos = i * 35 + 90;
+                monster.yPos = 40;
                 Parent.GameObjects.Add(monster);
             }
         }
@@ -141,12 +155,12 @@ namespace SpaceInvaders {
         public override void Update() {
             
             if (Input.KeyPressed(ConsoleKey.RightArrow)) {
-                xPos = xPos + 2;
+                xPos = xPos + 8;
                 
             }
 
             if (Input.KeyPressed(ConsoleKey.LeftArrow)) {
-                xPos = xPos - 2;
+                xPos = xPos - 8;
             }
 
             if (Input.KeyPressed(ConsoleKey.Spacebar)) {
@@ -202,7 +216,7 @@ namespace SpaceInvaders {
 
     }
 
-    class Monster : GameObject {
+    class SmallInvader : GameObject {
 
         private int _shootTimer = 400000;
         private int _moveTimer = 400;
@@ -212,6 +226,170 @@ namespace SpaceInvaders {
         private int _currStep = 10;
 
         public override void Start() {
+            Tag = "Enemy";
+            Scale = 1;
+
+            _shootTimer = Parent.Rand.Next(1500, 3500);
+
+            Sprite = new char[8, 8] {
+                {'\0', '\0', '\0', '\u2588', '\u2588', '\0', '\0', '\0'},
+                {'\0', '\0', '\u2588', '\u2588', '\u2588', '\u2588', '\0', '\0'},
+                {'\0', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\0'},
+                {'\u2588', '\u2588', '\0', '\u2588', '\u2588', '\0', '\u2588', '\u2588'},
+                {'\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588'},
+                {'\0', '\0', '\u2588', '\0', '\0', '\u2588', '\0', '\0'},
+                {'\0', '\u2588', '\0', '\u2588', '\u2588', '\0', '\u2588', '\0'},
+                {'\u2588', '\0', '\u2588', '\0', '\0', '\u2588', '\0', '\u2588'}
+            };
+
+        }
+
+        public override void Update() {
+
+            if (_moveTimer <= 0) {
+                _moveTimer = 400;
+                if (_currStep >= _UBound) {
+                    _currStep = 0;
+                    _movingRight = !_movingRight;
+
+                    if (_movingRight) {
+                        yPos = yPos + 8;
+                    }
+                }
+
+                if (_movingRight) {
+                    xPos = xPos + 5;
+                }
+                else {
+                    xPos = xPos - 5;
+                }
+
+                _currStep++;
+            }
+            _moveTimer--;
+
+        }
+
+        public override void LateUpdate(Frame thisFrame) {
+            if (_shootTimer <= 0) {
+                _shootTimer = Parent.Rand.Next(1500, 3500); ;
+                MonsterBullet bullet = new MonsterBullet();
+                bullet.Parent = Parent;
+                bullet.xPos = xPos + 10;
+                bullet.yPos = yPos + Sprite.GetLength(0) + 1;
+                bullet.Start();
+                Parent.GameObjects.Add(bullet);
+            }
+            _shootTimer--;
+        }
+
+    }
+
+    class MediumInvader : GameObject {
+
+        private int _shootTimer = 400000;
+        private int _moveTimer = 400;
+
+        private bool _movingRight = true;
+        private int _UBound = 20;
+        private int _currStep = 10;
+        private char[,] handsUp;
+        private char[,] handsDown;
+        private bool handsIsUp = false;
+
+        public override void Start() {
+            Tag = "Enemy";
+            Scale = 1;
+
+            _shootTimer = Parent.Rand.Next(1500, 3500);
+
+            handsUp = new char[8, 11] {
+                {'\0', '\0', '\u2588', '\0', '\0', '\0', '\0', '\0', '\u2588', '\0', '\0'},
+                {'\0', '\0', '\0', '\u2588', '\0', '\0', '\0', '\u2588', '\0', '\0', '\0'},
+                {'\u2588', '\0', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\0', '\u2588'},
+                {'\u2588', '\u2588', '\u2588', '\0', '\u2588', '\u2588', '\u2588', '\0', '\u2588', '\u2588', '\u2588'},
+                {'\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588'},
+                {'\0', '\0', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\0', '\0'},
+                {'\0', '\0', '\u2588', '\0', '\0', '\0', '\0', '\0', '\u2588', '\0', '\0'},
+                {'\0', '\0', '\0', '\u2588', '\u2588', '\0', '\u2588', '\u2588', '\0', '\0', '\0'}
+            };
+
+            handsDown = new char[8, 11] {
+                {'\0', '\0', '\u2588', '\0', '\0', '\0', '\0', '\0', '\u2588', '\0', '\0'},
+                {'\0', '\0', '\0', '\u2588', '\0', '\0', '\0', '\u2588', '\0', '\0', '\0'},
+                {'\0', '\0', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\0', '\0'},
+                {'\0', '\u2588', '\u2588', '\0', '\u2588', '\u2588', '\u2588', '\0', '\u2588', '\u2588', '\0'},
+                {'\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588'},
+                {'\u2588', '\0', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\u2588', '\0', '\u2588'},
+                {'\u2588', '\0', '\u2588', '\0', '\0', '\0', '\0', '\0', '\u2588', '\0', '\u2588'},
+                {'\0', '\0', '\0', '\u2588', '\u2588', '\0', '\u2588', '\u2588', '\0', '\0', '\0'}
+            };
+
+            Sprite = handsDown;
+
+        }
+
+        public override void Update() {
+            
+            if (_moveTimer <= 0) {
+                _moveTimer = 400;
+                if (_currStep >= _UBound) {
+                    _currStep = 0;
+                    _movingRight = !_movingRight;
+
+                    if (_movingRight) {
+                        yPos = yPos + 8;
+                    }
+                }
+
+                if (_movingRight) {
+                    xPos = xPos + 5;
+                }
+                else {
+                    xPos = xPos - 5;
+                }
+
+                if (handsIsUp) {
+                    handsIsUp = false;
+                    Sprite = handsDown;
+                } else {
+                    handsIsUp = true;
+                    Sprite = handsUp;
+                }
+
+                _currStep++;
+            }
+            _moveTimer--;
+
+        }
+
+        public override void LateUpdate(Frame thisFrame) {
+            if (_shootTimer <= 0) {
+                _shootTimer = Parent.Rand.Next(1500, 3500); ;
+                MonsterBullet bullet = new MonsterBullet();
+                bullet.Parent = Parent;
+                bullet.xPos = xPos + 10;
+                bullet.yPos = yPos + Sprite.GetLength(0) + 1;
+                bullet.Start();
+                Parent.GameObjects.Add(bullet);
+            }
+            _shootTimer--;
+        }
+
+    }
+
+    class LargeInvader : GameObject {
+
+        private int _shootTimer = 400000;
+        private int _moveTimer = 400;
+
+        private bool _movingRight = true;
+        private int _UBound = 20;
+        private int _currStep = 10;
+
+        public override void Start() {
+            throw new NotImplementedException();
+
             Tag = "Enemy";
             Scale = 1;
 
@@ -231,7 +409,7 @@ namespace SpaceInvaders {
         }
 
         public override void Update() {
-            
+
             if (_moveTimer <= 0) {
                 _moveTimer = 400;
                 if (_currStep >= _UBound) {
